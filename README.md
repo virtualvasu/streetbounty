@@ -1,8 +1,6 @@
 # StreetBounty
 
-[Watch Demo Video (WebM)](assets/screencast.webm)
-
-[![Watch StreetBounty demo](assets/Screenshot%20from%202026-04-10%2018-54-26.png)](assets/screencast.webm)
+[Watch Demo Video](https://drive.google.com/file/d/18lPta6JAQLz3j-WCje9a5IoS6xeOqoI0/view?usp=sharing)
 
 StreetBounty is a Stellar testnet dApp for community-driven road incident reporting. Citizens can report road issues, track wallet activity, and earn XLM-based rewards through a transparent, reward-ready workflow.
 

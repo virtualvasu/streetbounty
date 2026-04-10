@@ -1,55 +1,64 @@
 # StreetBounty
 
-StreetBounty is a Stellar testnet dApp for community-driven road incident reporting with reward-ready wallet flows.
+<video src="assets/screencast.webm" controls autoplay muted loop playsinline style="width: 100%; border-radius: 16px; margin: 16px 0;"></video>
 
-## What’s in this version
+StreetBounty is a Stellar testnet dApp for community-driven road incident reporting. Citizens can report road issues, track wallet activity, and earn XLM-based rewards through a transparent, reward-ready workflow.
 
-- Light-themed landing page with StreetBounty vision and CTA
-- Incident portal with:
-  - Wallet connect/disconnect
-  - Wallet address display
-  - XLM balance fetch + refresh
-  - XLM transfer form
-  - Transaction status + hash feedback
-  - Recent transaction history
+## Project Description
 
-## Tech stack
+StreetBounty is designed as a civic-tech frontend for road incident reporting. The application combines a public-facing landing page with a wallet-focused portal experience so users can learn about the product, connect a Stellar wallet, review balances, send testnet XLM, and inspect transaction history.
 
-- Next.js 14
-- TypeScript
-- Tailwind CSS
-- Stellar Wallets Kit + Stellar SDK
+The interface is built to feel professional, trustworthy, and easy to navigate. It is intentionally positioned as a premium civic and fintech experience rather than a generic crypto dashboard.
 
-## Run locally
+## Features
+
+- Landing page with product story, benefits, and a clear portal call to action
+- Portal dashboard with wallet connection and disconnection
+- XLM balance display with refresh support
+- Transaction history with explorer links
+- XLM transfer form with confirmation and feedback states
+- Balance trend chart and wallet activity overview
+- Incident reporting preview for the future reporting workflow
+
+## Setup Instructions
 
 ### Prerequisites
 
-- Node.js 18+
-- Freighter wallet (recommended) or another compatible Stellar wallet
+- Node.js 18 or later
+- npm
+- A compatible Stellar wallet such as Freighter
 
-### Setup
+### Run Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:3000
+Open the app in your browser at http://localhost:3000
 
-## Testnet funding
+## Testnet Funding
 
-1. Connect wallet in the portal
-2. Copy your address
-3. Fund on Stellar Laboratory:
-   https://laboratory.stellar.org/#account-creator?network=test
+1. Open the portal page and connect your Stellar wallet.
+2. Copy your public address.
+3. Fund the address using Stellar Laboratory testnet tools:
+  https://laboratory.stellar.org/#account-creator?network=test
 
-## App routes
+## App Routes
 
-- `/` → Landing page
-- `/portal` → Incident portal (wallet + balance + transfer + tx history)
+- `/` - Landing page
+- `/portal` - Incident portal and wallet dashboard
 
-## Important
+## Tech Stack
 
-- Network: Stellar Testnet only
-- Do not use real funds
-- Keep blockchain logic in `lib/stellar-helper.ts` unchanged
+- Next.js 14
+- TypeScript
+- Tailwind CSS
+- Stellar Wallets Kit
+- Stellar SDK
+
+## Notes
+
+- This project runs on Stellar Testnet only.
+- Do not use real funds.
+- Blockchain logic lives in `lib/stellar-helper.ts` and should remain unchanged.

@@ -37,6 +37,20 @@ npm run dev
 
 Open the app in your browser at http://localhost:3000
 
+## Screenshots
+
+### Landing Page
+
+![StreetBounty landing page](assets/Screenshot%20from%202026-04-10%2018-53-58.png)
+
+### Portal Dashboard
+
+![StreetBounty portal dashboard](assets/Screenshot%20from%202026-04-10%2018-54-26.png)
+
+### Wallet and Transactions View
+
+![StreetBounty wallet and transactions](assets/Screenshot%20from%202026-04-10%2018-55-10.png)
+
 ## Testnet Funding
 
 1. Open the portal page and connect your Stellar wallet.

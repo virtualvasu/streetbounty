@@ -39,6 +39,8 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [limit] = useState(10);
+  const [search, setSearch] = useState('');
+  const [assetFilter, setAssetFilter] = useState('ALL');
 
   const fetchTransactions = async () => {
     try {
@@ -88,13 +90,23 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
     return tx.from === publicKey;
   };
 
+  const uniqueAssets = Array.from(new Set(transactions.map((tx) => tx.asset || 'XLM')));
+
+  const filteredTransactions = transactions.filter((tx) => {
+    const term = search.trim().toLowerCase();
+    const target = [tx.hash, tx.from, tx.to, tx.asset, tx.amount, tx.type].join(' ').toLowerCase();
+    const searchMatches = !term || target.includes(term);
+    const assetMatches = assetFilter === 'ALL' || (tx.asset || 'XLM') === assetFilter;
+    return searchMatches && assetMatches;
+  });
+
   if (loading) {
     return (
       <Card title="📜 Transaction History">
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="animate-pulse">
-              <div className="h-20 bg-white/5 rounded-lg"></div>
+              <div className="h-20 bg-slate-100 rounded-lg"></div>
             </div>
           ))}
         </div>
@@ -105,7 +117,7 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
   return (
     <Card>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
           <FaHistory className="text-purple-400" />
           Transaction History
         </h2>
@@ -119,21 +131,49 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
         </button>
       </div>
 
+      <div className="mb-4 grid sm:grid-cols-[1fr_auto] gap-3">
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search hash, address, amount or asset..."
+          className="w-full bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors"
+        />
+        <select
+          value={assetFilter}
+          onChange={(e) => setAssetFilter(e.target.value)}
+          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg px-3 py-2.5 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-blue-500 transition-colors"
+        >
+          <option value="ALL">All Assets</option>
+          {uniqueAssets.map((asset) => (
+            <option key={asset} value={asset}>
+              {asset}
+            </option>
+          ))}
+        </select>
+      </div>
+
       {transactions.length === 0 ? (
         <EmptyState
           icon="📭"
           title="No Transactions Yet"
           description="Your transaction history will appear here once you start sending or receiving XLM."
         />
+      ) : filteredTransactions.length === 0 ? (
+        <EmptyState
+          icon="🔎"
+          title="No matching transactions"
+          description="Try changing your search term or asset filter."
+        />
       ) : (
         <div className="space-y-3">
-          {transactions.map((tx) => {
+          {filteredTransactions.map((tx) => {
             const outgoing = isOutgoing(tx);
             
             return (
               <div
                 key={tx.id}
-                className="bg-white/5 hover:bg-white/10 rounded-xl p-4 transition-all border border-white/10 hover:border-white/20"
+                className="bg-white/75 dark:bg-slate-800/85 hover:bg-white dark:hover:bg-slate-700 rounded-xl p-4 transition-all border border-slate-200/80 dark:border-slate-700 animate-fade-in backdrop-blur-sm"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
@@ -145,7 +185,7 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
                       {outgoing ? <FaArrowUp /> : <FaArrowDown />}
                     </div>
                     <div>
-                      <p className="text-white font-semibold">
+                      <p className="text-slate-900 dark:text-slate-100 font-semibold">
                         {outgoing ? 'Sent' : 'Received'}
                       </p>
                       {tx.amount && (
@@ -170,18 +210,18 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
-                    <p className="text-white/40 text-xs mb-1">From</p>
-                    <p className="text-white/80 font-mono">{formatAddress(tx.from)}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mb-1">From</p>
+                    <p className="text-slate-700 dark:text-slate-200 font-mono">{formatAddress(tx.from)}</p>
                   </div>
                   <div>
-                    <p className="text-white/40 text-xs mb-1">To</p>
-                    <p className="text-white/80 font-mono">{formatAddress(tx.to)}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-xs mb-1">To</p>
+                    <p className="text-slate-700 dark:text-slate-200 font-mono">{formatAddress(tx.to)}</p>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-center mt-3 pt-3 border-t border-white/10">
-                  <p className="text-white/40 text-xs">{formatDate(tx.createdAt)}</p>
-                  <p className="text-white/30 text-xs font-mono">{tx.hash.slice(0, 12)}...</p>
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-slate-200 dark:border-slate-700">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs">{formatDate(tx.createdAt)}</p>
+                  <p className="text-slate-400 dark:text-slate-500 text-xs font-mono">{tx.hash.slice(0, 12)}...</p>
                 </div>
               </div>
             );
@@ -191,8 +231,8 @@ export default function TransactionHistory({ publicKey }: TransactionHistoryProp
 
       {transactions.length > 0 && (
         <div className="mt-4 text-center">
-          <p className="text-white/40 text-sm">
-            Showing last {transactions.length} transaction{transactions.length !== 1 ? 's' : ''}
+          <p className="text-slate-500 dark:text-slate-400 text-sm">
+            Showing {filteredTransactions.length} of {transactions.length} transaction{transactions.length !== 1 ? 's' : ''}
           </p>
         </div>
       )}

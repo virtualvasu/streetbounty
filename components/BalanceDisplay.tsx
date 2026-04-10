@@ -19,9 +19,11 @@ import { Card } from './example-components';
 
 interface BalanceDisplayProps {
   publicKey: string;
+  onAssetsUpdate?: (assets: Array<{ code: string; issuer: string; balance: string }>) => void;
+  onHistoryUpdate?: (point: { timestamp: number; balance: number }) => void;
 }
 
-export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
+export default function BalanceDisplay({ publicKey, onAssetsUpdate, onHistoryUpdate }: BalanceDisplayProps) {
   const [balance, setBalance] = useState<string>('0');
   const [assets, setAssets] = useState<Array<{ code: string; issuer: string; balance: string }>>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,13 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
       const balanceData = await stellar.getBalance(publicKey);
       setBalance(balanceData.xlm);
       setAssets(balanceData.assets);
+      onAssetsUpdate?.(balanceData.assets);
+
+      const currentPoint = {
+        timestamp: Date.now(),
+        balance: parseFloat(balanceData.xlm || '0'),
+      };
+      onHistoryUpdate?.(currentPoint);
     } catch (error) {
       console.error('Error fetching balance:', error);
       alert('Failed to fetch balance. Please try again.');
@@ -60,8 +69,8 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
     return (
       <Card title="💰 Your Balance">
         <div className="animate-pulse">
-          <div className="h-16 bg-white/5 rounded-lg mb-4"></div>
-          <div className="h-10 bg-white/5 rounded-lg w-1/2"></div>
+          <div className="h-16 bg-slate-100 rounded-lg mb-4"></div>
+          <div className="h-10 bg-slate-100 rounded-lg w-1/2"></div>
         </div>
       </Card>
     );
@@ -70,7 +79,7 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
   return (
     <Card>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-slate-900 flex items-center gap-2">
           <FaCoins className="text-yellow-400" />
           Your Balance
         </h2>
@@ -85,17 +94,17 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
       </div>
 
       {/* XLM Balance */}
-      <div className="bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6 mb-4">
-        <p className="text-white/60 text-sm mb-2">Available Balance</p>
+      <div className="bg-gradient-to-br from-sky-50/90 via-white to-indigo-50/80 dark:from-slate-800 dark:to-slate-900 border border-sky-200/70 dark:border-slate-700 rounded-xl p-6 mb-4 transition-colors duration-200">
+        <p className="text-slate-600 dark:text-slate-300 text-sm mb-2">Available Balance</p>
         <div className="flex items-baseline gap-2">
-          <p className="text-5xl font-bold text-white">
+          <p className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-slate-100">
             {formatBalance(balance)}
           </p>
-          <p className="text-2xl text-white/80">XLM</p>
+          <p className="text-xl md:text-2xl text-slate-700 dark:text-slate-200">XLM</p>
         </div>
         
         {/* USD Estimate (placeholder for bonus feature) */}
-        <p className="text-white/40 text-sm mt-2">
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-2">
           ≈ ${(parseFloat(balance) * 0.12).toFixed(2)} USD
         </p>
       </div>
@@ -103,19 +112,19 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
       {/* Other Assets */}
       {assets.length > 0 && (
         <div className="space-y-2">
-          <p className="text-white/60 text-sm mb-3">Other Assets</p>
+          <p className="text-slate-600 dark:text-slate-300 text-sm mb-3">Other Assets</p>
           {assets.map((asset, index) => (
             <div
               key={index}
-              className="bg-white/5 border border-white/10 rounded-lg p-4 flex justify-between items-center"
+              className="bg-white/75 dark:bg-slate-800/85 border border-slate-200/80 dark:border-slate-700 rounded-lg p-4 flex justify-between items-center transition-colors duration-200 backdrop-blur-sm"
             >
               <div>
-                <p className="text-white font-semibold">{asset.code}</p>
-                <p className="text-white/40 text-xs font-mono truncate max-w-[200px]">
+                <p className="text-slate-900 dark:text-slate-100 font-semibold">{asset.code}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-xs font-mono truncate max-w-[200px]">
                   {asset.issuer}
                 </p>
               </div>
-              <p className="text-white text-lg font-bold">
+              <p className="text-slate-900 dark:text-slate-100 text-lg font-bold">
                 {formatBalance(asset.balance)}
               </p>
             </div>
@@ -124,8 +133,8 @@ export default function BalanceDisplay({ publicKey }: BalanceDisplayProps) {
       )}
 
       {/* Info Box */}
-      <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/30 rounded-lg">
-        <p className="text-yellow-200/90 text-xs">
+      <div className="mt-4 p-3 bg-amber-50/85 dark:bg-slate-800/85 border border-amber-200/70 dark:border-slate-700 rounded-lg transition-colors duration-200 backdrop-blur-sm">
+        <p className="text-yellow-800 text-xs">
           💡 <strong>Tip:</strong> Keep at least 1 XLM in your account for network reserves.
         </p>
       </div>

@@ -53,14 +53,14 @@ export function TransactionItem({
   explorerLink: string;
 }) {
   return (
-    <div className="bg-white/5 hover:bg-white/10 rounded-lg p-4 transition-colors">
+    <div className="bg-slate-50 hover:bg-slate-100 rounded-lg p-4 transition-colors border border-slate-200">
       <div className="flex justify-between items-start mb-2">
         <div>
-          <p className="text-white font-semibold">
+          <p className="text-slate-900 font-semibold">
             {type === 'payment' ? '💸' : '📝'} {type}
           </p>
           {amount && (
-            <p className="text-white/80">
+            <p className="text-slate-600">
               {amount} {asset || 'XLM'}
             </p>
           )}
@@ -75,7 +75,7 @@ export function TransactionItem({
           View →
         </a>
       </div>
-      <div className="flex justify-between text-xs text-white/50">
+      <div className="flex justify-between text-xs text-slate-500">
         <span>{new Date(date).toLocaleString()}</span>
         <span className="font-mono">{hash.slice(0, 8)}...</span>
       </div>
@@ -114,14 +114,14 @@ export function Alert({
   onClose: () => void;
 }) {
   const colors = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    info: 'bg-blue-500',
+    success: 'bg-emerald-500/90 border border-emerald-300/30',
+    error: 'bg-rose-500/90 border border-rose-300/30',
+    info: 'bg-sky-500/90 border border-sky-300/30',
   };
 
   return (
     <div
-      className={`${colors[type]} text-white px-6 py-4 rounded-lg shadow-lg flex justify-between items-center`}
+      className={`${colors[type]} text-white px-6 py-4 rounded-xl shadow-lg flex justify-between items-center backdrop-blur-sm`}
     >
       <span>{message}</span>
       <button
@@ -143,9 +143,9 @@ export function Card({
   children: React.ReactNode;
 }) {
   return (
-    <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-2xl">
+    <div className="sb-glass rounded-2xl p-6 transition-all duration-300 animate-fade-in hover:shadow-xl hover:shadow-sky-100/30 dark:hover:shadow-sky-950/20">
       {title && (
-        <h2 className="text-2xl font-bold text-white mb-4">{title}</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4">{title}</h2>
       )}
       {children}
     </div>
@@ -170,15 +170,15 @@ export function Input({
 }) {
   return (
     <div>
-      <label className="block text-white/80 text-sm mb-2">{label}</label>
+      <label className="block text-slate-700 dark:text-slate-300 text-sm mb-2">{label}</label>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-white/5 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-white/40 focus:outline-none focus:border-white/40"
+        className="w-full bg-white/85 dark:bg-slate-800/85 border border-slate-300 dark:border-slate-600 rounded-xl px-4 py-3 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-400/30 transition-all"
       />
-      {error && <p className="text-red-400 text-sm mt-1">{error}</p>}
+      {error && <p className="text-red-600 dark:text-red-400 text-sm mt-1">{error}</p>}
     </div>
   );
 }
@@ -190,26 +190,29 @@ export function Button({
   variant = 'primary',
   disabled = false,
   fullWidth = false,
+  type = 'button',
 }: {
   children: React.ReactNode;
   onClick: () => void;
   variant?: 'primary' | 'secondary' | 'danger';
   disabled?: boolean;
   fullWidth?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }) {
   const variants = {
-    primary: 'bg-blue-600 hover:bg-blue-700',
-    secondary: 'bg-gray-600 hover:bg-gray-700',
-    danger: 'bg-red-600 hover:bg-red-700',
+    primary: 'bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500',
+    secondary: 'bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-500 hover:to-slate-600',
+    danger: 'bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500',
   };
 
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`${variants[variant]} ${
         fullWidth ? 'w-full' : ''
-      } text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed`}
+      } text-white font-bold py-3 px-6 rounded-xl transition-all duration-200 hover:scale-[1.01] shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
     >
       {children}
     </button>
@@ -229,8 +232,8 @@ export function EmptyState({
   return (
     <div className="text-center py-12">
       <div className="text-6xl mb-4">{icon}</div>
-      <h3 className="text-white text-xl font-semibold mb-2">{title}</h3>
-      <p className="text-white/60">{description}</p>
+      <h3 className="text-slate-900 dark:text-slate-100 text-xl font-semibold mb-2">{title}</h3>
+      <p className="text-slate-600 dark:text-slate-300">{description}</p>
     </div>
   );
 }
@@ -251,12 +254,12 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gray-900 rounded-2xl shadow-2xl max-w-md w-full">
-        <div className="flex justify-between items-center p-6 border-b border-white/10">
-          <h3 className="text-2xl font-bold text-white">{title}</h3>
+      <div className="sb-glass rounded-2xl shadow-2xl max-w-md w-full animate-fade-in">
+        <div className="flex justify-between items-center p-6 border-b border-slate-200 dark:border-slate-700">
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{title}</h3>
           <button
             onClick={onClose}
-            className="text-white/60 hover:text-white text-2xl"
+            className="text-slate-500 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-2xl transition-colors"
           >
             ✕
           </button>

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'StreetBounty - Road Incident Reporting & Rewards',
-  description: 'Report road incidents and earn XLM rewards on Stellar blockchain',
+  title: 'StreetBounty | Road Incident Reporting DApp',
+  description: 'StreetBounty is a civic-tech DApp for reporting road incidents and earning XLM rewards on Stellar.',
 };
 
 export default function RootLayout({

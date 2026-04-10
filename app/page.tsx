@@ -1,191 +1,362 @@
-/**
- * StreetBounty - Road Incident Reporting DApp
- * Landing Page / Homepage
- */
-
 'use client';
 
 import Link from 'next/link';
-import { FaRoad, FaCoins, FaCheckCircle, FaGlobeAmericas, FaArrowRight } from 'react-icons/fa';
+import {
+  FaArrowRight,
+  FaBolt,
+  FaCheckCircle,
+  FaCoins,
+  FaGlobeAmericas,
+  FaMapMarkedAlt,
+  FaShieldAlt,
+  FaWallet,
+} from 'react-icons/fa';
 import ThemeToggle from '@/components/ThemeToggle';
+
+const howItWorks = [
+  {
+    step: '01',
+    title: 'Connect Wallet',
+    description: 'Open StreetBounty with a Stellar wallet and enter the civic reporting flow.',
+  },
+  {
+    step: '02',
+    title: 'Report Incident',
+    description: 'Capture the road issue with location, details, and proof when the portal expands.',
+  },
+  {
+    step: '03',
+    title: 'Verify Community',
+    description: 'The network validates the report so the signal stays trusted and useful.',
+  },
+  {
+    step: '04',
+    title: 'Earn XLM',
+    description: 'Verified contributions are rewarded directly through the Stellar network.',
+  },
+];
+
+const audienceCards = [
+  {
+    icon: FaWallet,
+    title: 'For Citizens',
+    points: ['Simple incident submissions', 'Reward-backed participation', 'Clear contribution history'],
+  },
+  {
+    icon: FaMapMarkedAlt,
+    title: 'For Authorities',
+    points: ['Real-time incident visibility', 'Better prioritization', 'Actionable location data'],
+  },
+  {
+    icon: FaGlobeAmericas,
+    title: 'For Communities',
+    points: ['Shared public trust', 'Safer roads', 'Transparent incentive loops'],
+  },
+];
+
+const trustSignals = [
+  'Built on Stellar',
+  'Fast, low-fee XLM rewards',
+  'Decentralized verification',
+  'Testnet-ready for demos',
+];
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/30 to-indigo-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 transition-colors duration-300">
-      {/* Header */}
-      <header className="border-b border-slate-200/80 dark:border-slate-800 backdrop-blur-sm bg-white/70 dark:bg-slate-950/70 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
+    <div className="sb-page">
+      <header className="sticky top-0 z-30 border-b border-white/10 bg-white/50 backdrop-blur-xl dark:bg-slate-950/55">
+        <div className="sb-shell">
+          <div className="flex items-center justify-between py-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center text-2xl">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-orange-500 text-2xl shadow-lg shadow-cyan-500/20">
                 🛣️
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">StreetBounty</h1>
-                <p className="text-slate-600 dark:text-slate-300 text-sm">Smart Incident Reporting Network</p>
+                <p className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">
+                  StreetBounty
+                </p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Civic incident reporting, rewarded on Stellar
+                </p>
               </div>
             </div>
-            <ThemeToggle />
+            <div className="flex items-center gap-3">
+              <span className="sb-chip hidden sm:inline-flex">
+                <FaShieldAlt /> Stellar testnet
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 py-16">
-        <div className="text-center mb-16">
-          <span className="inline-flex items-center rounded-full border border-sky-200/80 dark:border-sky-900/60 bg-white/80 dark:bg-slate-900/80 px-4 py-1 text-xs uppercase tracking-[0.2em] text-sky-700 dark:text-sky-300 mb-6">
-            Decentralized Road Safety Network
-          </span>
-          <h2 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight">
-            Make Roads Safer,<br />Earn Rewards
-          </h2>
-          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-10">
-            Help improve road safety by reporting incidents in real-time. Get rewarded with XLM cryptocurrency for every verified report. Together, we can build smarter, safer roads.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/portal">
-              <button className="bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white font-bold py-4 px-8 rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-orange-300/40">
-                Enter Incident Portal <FaArrowRight />
-              </button>
-            </Link>
-          </div>
-        </div>
+      <main className="sb-shell pb-20 pt-8 md:pt-12">
+        <section className="sb-hero-grid items-center lg:grid lg:grid-cols-[1.15fr_0.85fr] lg:gap-8">
+          <div className="space-y-8">
+            <span className="sb-kicker">
+              <FaBolt className="text-cyan-400" />
+              Civic-tech rewards network
+            </span>
 
-        {/* Ideology Section */}
-        <div className="grid md:grid-cols-2 gap-12 mb-20 items-center">
-          <div>
-            <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-6">Our Vision</h3>
-            <p className="text-slate-600 dark:text-slate-300 mb-4">
-              StreetBounty is a decentralized platform that leverages blockchain technology to create a community-driven road safety network. By combining crowdsourced incident reporting with cryptocurrency incentives, we're building a system where:
-            </p>
-            <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <span className="text-orange-600 mt-1">✓</span>
-                <span className="text-slate-600 dark:text-slate-300">Citizens are rewarded for maintaining road safety awareness</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-orange-600 mt-1">✓</span>
-                <span className="text-slate-600 dark:text-slate-300">Road authorities get real-time incident data for better planning</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-orange-600 mt-1">✓</span>
-                <span className="text-slate-600 dark:text-slate-300">All transactions are transparent and immutable on the blockchain</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-orange-600 mt-1">✓</span>
-                <span className="text-slate-600 dark:text-slate-300">No central authority - truly decentralized infrastructure</span>
-              </li>
-            </ul>
-          </div>
-          <div className="sb-glass rounded-2xl p-8 transition-colors duration-300">
             <div className="space-y-6">
-              {[
-                { icon: '📍', title: 'Real-Time Reporting', desc: 'Report incidents instantly from any location' },
-                { icon: '💰', title: 'Earn XLM', desc: 'Get rewarded for each verified incident report' },
-                { icon: '🔗', title: 'Blockchain Verified', desc: 'All data stored on Stellar blockchain' },
-                { icon: '📊', title: 'Transparency', desc: 'Complete transaction history and verification' },
-              ].map((item, idx) => (
-                <div key={idx}>
-                  <div className="text-3xl mb-2">{item.icon}</div>
-                  <h4 className="text-slate-900 dark:text-slate-100 font-semibold mb-1">{item.title}</h4>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm">{item.desc}</p>
+              <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-slate-950 dark:text-white md:text-7xl">
+                Make roads safer.
+                <span className="block bg-gradient-to-r from-cyan-400 via-sky-300 to-orange-400 bg-clip-text text-transparent">
+                  Get rewarded in XLM.
+                </span>
+              </h1>
+              <p className="max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 md:text-xl">
+                StreetBounty turns road incident reporting into a trusted public utility. Citizens can flag hazards, support verification, and earn Stellar-powered rewards for contributing useful local data.
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <Link href="/portal" className="sb-btn-primary">
+                Launch Portal <FaArrowRight />
+              </Link>
+              <a href="#how-it-works" className="sb-btn-secondary">
+                See how it works
+              </a>
+            </div>
+
+            <div className="sb-grid-3">
+              <div className="sb-stat">
+                <p className="text-3xl font-bold text-slate-950 dark:text-white">Fast</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Stellar settlement and low-fee rewards.</p>
+              </div>
+              <div className="sb-stat">
+                <p className="text-3xl font-bold text-slate-950 dark:text-white">Trusted</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Community verification keeps reports useful.</p>
+              </div>
+              <div className="sb-stat">
+                <p className="text-3xl font-bold text-slate-950 dark:text-white">Useful</p>
+                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Built for citizens, authorities, and local response teams.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-cyan-400/20 via-transparent to-orange-400/15 blur-3xl" />
+            <div className="sb-glass relative overflow-hidden rounded-[2rem] p-6 md:p-8">
+              <div className="flex items-center justify-between">
+                <span className="sb-chip">
+                  <FaCoins /> Reward network
+                </span>
+                <span className="rounded-full bg-white/60 px-3 py-1 text-xs font-semibold text-slate-700 dark:bg-white/10 dark:text-slate-200">
+                  Live on testnet
+                </span>
+              </div>
+
+              <div className="mt-8 space-y-6">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">
+                    StreetBounty mission
+                  </p>
+                  <h2 className="mt-3 text-3xl font-bold text-slate-950 dark:text-white">
+                    A public-safety dashboard for reporting, verifying, and rewarding road insights.
+                  </h2>
                 </div>
+
+                <div className="sb-grid-2">
+                  <div className="sb-panel rounded-2xl p-4">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Network</p>
+                    <p className="mt-2 text-xl font-bold text-slate-950 dark:text-white">Stellar</p>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Fast, transparent, low-fee transactions.</p>
+                  </div>
+                  <div className="sb-panel rounded-2xl p-4">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Reward token</p>
+                    <p className="mt-2 text-xl font-bold text-slate-950 dark:text-white">XLM</p>
+                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Reward verified contributors directly.</p>
+                  </div>
+                </div>
+
+                <div className="rounded-2xl bg-gradient-to-r from-cyan-500/10 via-sky-500/5 to-orange-500/10 p-5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                      <FaCheckCircle />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-slate-950 dark:text-white">Verified civic signal</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-300">
+                        Reports are designed to become operational evidence, not noisy submissions.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="sb-section grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="sb-glass rounded-[1.75rem] p-7 md:p-8">
+            <span className="sb-kicker mb-4 inline-flex">
+              <FaShieldAlt className="text-cyan-400" />
+              Problem and solution
+            </span>
+            <h2 className="text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">
+              Reporting road incidents should feel immediate, credible, and worth doing.
+            </h2>
+            <p className="mt-4 text-base leading-7 text-slate-600 dark:text-slate-300">
+              Most civic reporting tools are slow, disconnected, and forgettable. StreetBounty is designed as a reward-driven layer on top of public-safety reporting, where verified input can move faster and contributors are recognized with XLM.
+            </p>
+            <div className="mt-6 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+              <p className="flex items-start gap-3"><FaCheckCircle className="mt-1 text-cyan-400" /> Citizens submit useful incident data instead of waiting for fragmented channels.</p>
+              <p className="flex items-start gap-3"><FaCheckCircle className="mt-1 text-cyan-400" /> Authorities and communities get a clearer picture of what needs attention.</p>
+              <p className="flex items-start gap-3"><FaCheckCircle className="mt-1 text-cyan-400" /> Incentives keep the network active, transparent, and accountable.</p>
+            </div>
+          </div>
+
+          <div className="sb-grid-2">
+            <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Realtime utility</p>
+              <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">Road data with a civic interface.</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The portal is meant to feel like a mission control dashboard, not a generic form app.</p>
+            </div>
+            <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Reward flow</p>
+              <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">XLM payouts for verified reports.</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">A simple incentive loop that can scale with trust and verification.</p>
+            </div>
+            <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Portal route</p>
+              <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">Homepage CTA should take users into the dashboard.</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The portal becomes the operational center for wallet, rewards, and history.</p>
+            </div>
+            <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Trust layer</p>
+              <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">Decentralized and testnet-ready.</h3>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">Designed for a production-feeling demo while keeping the Stellar testnet boundary visible.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="sb-section">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="sb-kicker">
+                <FaArrowRight className="text-cyan-400" />
+                Flow
+              </span>
+              <h2 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">
+                How StreetBounty works
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
+              The product story should be easy to scan: connect, report, verify, and reward. The design needs to make that sequence feel inevitable.
+            </p>
+          </div>
+
+          <div className="sb-grid-4 mt-8">
+            {howItWorks.map((item) => (
+              <article key={item.step} className="sb-glass rounded-[1.5rem] p-6 transition-transform duration-200 hover:-translate-y-1">
+                <p className="text-sm font-bold tracking-[0.25em] text-cyan-500 dark:text-cyan-300">{item.step}</p>
+                <h3 className="mt-4 text-xl font-bold text-slate-950 dark:text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="sb-section">
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <span className="sb-kicker">
+                <FaCoins className="text-orange-400" />
+                Audience
+              </span>
+              <h2 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">
+                Built for citizens, authorities, and communities
+              </h2>
+            </div>
+            <p className="max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
+              The interface should feel inclusive across user groups while keeping the platform focused on one shared goal: better road safety.
+            </p>
+          </div>
+
+          <div className="sb-grid-3 mt-8">
+            {audienceCards.map((card) => {
+              const Icon = card.icon;
+              return (
+                <article key={card.title} className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                    <Icon />
+                  </div>
+                  <h3 className="mt-5 text-2xl font-bold text-slate-950 dark:text-white">{card.title}</h3>
+                  <ul className="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                    {card.points.map((point) => (
+                      <li key={point} className="flex items-start gap-3">
+                        <span className="mt-1 text-cyan-400">•</span>
+                        <span>{point}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+
+        <section className="sb-section grid gap-6 lg:grid-cols-[1fr_0.85fr]">
+          <div className="sb-glass rounded-[1.75rem] p-7 md:p-8">
+            <span className="sb-kicker">
+              <FaShieldAlt className="text-cyan-400" />
+              Trust and tech
+            </span>
+            <h2 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">
+              Stellar, XLM, decentralization, and secure verification.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
+              StreetBounty should communicate confidence through technical clarity. The trust layer is visible, the rewards are explicit, and the routes are direct.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {trustSignals.map((signal) => (
+                <span key={signal} className="sb-chip">
+                  {signal}
+                </span>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* How It Works */}
-        <div className="mb-20">
-          <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-12 text-center">How It Works</h3>
-          <div className="grid md:grid-cols-4 gap-6">
-            {[
-              { step: '1', title: 'Setup Wallet', desc: 'Connect your Freighter wallet to StreetBounty' },
-              { step: '2', title: 'Report Incident', desc: 'Spot a road issue and submit a report' },
-              { step: '3', title: 'Get Verified', desc: 'Community verifies your incident with voting' },
-              { step: '4', title: 'Earn XLM', desc: 'Receive XLM rewards directly to your wallet' },
-            ].map((item, idx) => (
-              <div key={idx} className="sb-glass rounded-xl p-6 hover:border-orange-200 transition-all shadow-sm hover:-translate-y-1">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-600 to-red-600 rounded-lg flex items-center justify-center text-2xl font-bold text-white mb-4">
-                  {item.step}
-                </div>
-                <h4 className="text-slate-900 dark:text-slate-100 font-semibold mb-2">{item.title}</h4>
-                <p className="text-slate-600 dark:text-slate-300 text-sm">{item.desc}</p>
+          <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-400 to-orange-500 text-white">
+                <FaCoins />
               </div>
-            ))}
+              <div>
+                <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Portal readiness</p>
+                <h3 className="text-2xl font-bold text-slate-950 dark:text-white">Dashboard-first experience</h3>
+              </div>
+            </div>
+            <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
+              The portal is where wallet connection, balances, rewards, and history live. Keep the homepage focused on context, then let the final CTA carry users through.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="sb-chip">Wallet tools</span>
+              <span className="sb-chip sb-chip-warm">Rewards flow</span>
+              <span className="sb-chip">Incident preview</span>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* Benefits Section */}
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          <div className="sb-glass rounded-xl p-8 transition-colors duration-300 hover:-translate-y-1">
-            <div className="text-4xl mb-4">🚗</div>
-            <h4 className="text-slate-900 dark:text-slate-100 font-bold text-lg mb-3">For Drivers</h4>
-            <ul className="text-slate-600 dark:text-slate-300 space-y-2 text-sm">
-              <li>• Safer route planning</li>
-              <li>• Real-time hazard alerts</li>
-              <li>• Community support</li>
-            </ul>
-          </div>
-          <div className="sb-glass rounded-xl p-8 transition-colors duration-300 hover:-translate-y-1">
-            <div className="text-4xl mb-4">🏛️</div>
-            <h4 className="text-slate-900 dark:text-slate-100 font-bold text-lg mb-3">For Authorities</h4>
-            <ul className="text-slate-600 dark:text-slate-300 space-y-2 text-sm">
-              <li>• Real-time incident data</li>
-              <li>• Better resource allocation</li>
-              <li>• Predictive maintenance</li>
-            </ul>
-          </div>
-          <div className="sb-glass rounded-xl p-8 transition-colors duration-300 hover:-translate-y-1">
-            <div className="text-4xl mb-4">🌍</div>
-            <h4 className="text-slate-900 dark:text-slate-100 font-bold text-lg mb-3">For Communities</h4>
-            <ul className="text-slate-600 dark:text-slate-300 space-y-2 text-sm">
-              <li>• Collective safety</li>
-              <li>• Economic incentives</li>
-              <li>• Decentralized trust</li>
-            </ul>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="bg-gradient-to-r from-orange-100/80 via-rose-50/80 to-indigo-100/50 dark:from-slate-900 dark:to-slate-800 border border-orange-200/70 dark:border-slate-700 rounded-2xl p-8 md:p-12 text-center shadow-lg transition-colors duration-300">
-          <h3 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-4">Ready to Make a Difference?</h3>
-          <p className="text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
-            Start by setting up your wallet, connecting to the Stellar Testnet, and then head to the incident portal to begin reporting and earning rewards.
+        <section className="sb-section sb-glass rounded-[1.75rem] p-7 md:p-8 text-center">
+          <h2 className="text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">
+            StreetBounty turns reporting into a visible civic loop.
+          </h2>
+          <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
+            The frontend should feel persuasive, informative, and reliable from the first hero section to the final CTA. It should be easy to understand what the app does, who it helps, and why the portal matters.
           </p>
-          <Link href="/portal">
-            <button className="bg-gradient-to-r from-orange-600 to-rose-600 hover:from-orange-500 hover:to-rose-500 text-white font-bold py-4 px-10 rounded-xl transition-all transform hover:scale-105 inline-flex items-center gap-2 shadow-lg hover:shadow-orange-300/40">
-              Go to Incident Portal <FaArrowRight />
-            </button>
+          <Link href="/portal" className="sb-btn-primary mt-8">
+            Open Portal <FaArrowRight />
           </Link>
-        </div>
-
-        {/* Tech Stack */}
-        <div className="mt-20 mb-12">
-          <h3 className="text-center text-slate-600 dark:text-slate-300 mb-8">Built with cutting-edge technology</h3>
-          <div className="flex flex-wrap justify-center gap-6">
-            <div className="sb-glass px-6 py-3 rounded-full text-slate-700 dark:text-slate-300 text-sm transition-colors duration-300">
-              ⭐ Stellar Blockchain
-            </div>
-            <div className="sb-glass px-6 py-3 rounded-full text-slate-700 dark:text-slate-300 text-sm transition-colors duration-300">
-              🚀 XLM Payments
-            </div>
-            <div className="sb-glass px-6 py-3 rounded-full text-slate-700 dark:text-slate-300 text-sm transition-colors duration-300">
-              🔗 Decentralized
-            </div>
-            <div className="sb-glass px-6 py-3 rounded-full text-slate-700 dark:text-slate-300 text-sm transition-colors duration-300">
-              🛡️ Secure & Verified
-            </div>
-          </div>
-        </div>
+        </section>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 mt-16 bg-white dark:bg-slate-950 transition-colors duration-300">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="text-center text-slate-500 dark:text-slate-400 text-sm">
-            <p className="mb-2">StreetBounty - Making Roads Safer, One Report at a Time</p>
-            <p className="text-xs">⚠️ Running on Stellar Testnet | Only for testing purposes</p>
+      <footer className="border-t border-white/10 bg-white/45 backdrop-blur-xl dark:bg-slate-950/55">
+        <div className="sb-shell py-8">
+          <div className="flex flex-col gap-3 text-sm text-slate-500 dark:text-slate-400 md:flex-row md:items-center md:justify-between">
+            <p>StreetBounty - road incident reporting with reward-backed participation.</p>
+            <p>Stellar testnet demo only. XLM rewards shown for product demonstration.</p>
           </div>
         </div>
       </footer>

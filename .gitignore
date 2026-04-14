@@ -1,0 +1,23 @@
+# Secrets and local chain config
+.stellar/
+
+# Node/Next artifacts
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+out/
+**/out/
+
+# Build and cache
+coverage/
+*.tsbuildinfo
+
+# Local env files
+.env
+.env.*
+!.env.example
+
+# OS/editor noise
+.DS_Store
+.vscode/

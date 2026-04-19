@@ -5,10 +5,9 @@
 
 import * as StellarSdk from '@stellar/stellar-sdk';
 import { 
-  StellarWalletsKit, 
-  WalletNetwork, 
+  StellarWalletsKit,
+  WalletNetwork,
   allowAllModules,
-  FREIGHTER_ID 
 } from '@creit.tech/stellar-wallets-kit';
 
 export class StellarHelper {
@@ -36,7 +35,7 @@ export class StellarHelper {
     // Stellar Wallets Kit'i initialize et
     this.kit = new StellarWalletsKit({
       network: this.network,
-      selectedWalletId: FREIGHTER_ID,
+      selectedWalletId: 'freighter',
       modules: allowAllModules(),
     });
   }
@@ -50,7 +49,6 @@ export class StellarHelper {
       // Wallet modal'ı aç ve wallet seçildiğinde adresi al
       await this.kit.openModal({
         onWalletSelected: async (option) => {
-          console.log('Wallet selected:', option.id);
           this.kit.setWallet(option.id);
         }
       });

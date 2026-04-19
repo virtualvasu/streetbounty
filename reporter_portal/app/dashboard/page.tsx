@@ -7,6 +7,18 @@ import { reporterContract, type ReporterIncident } from '@/lib/reporter-contract
 
 const statusFilters: Array<'all' | 'pending' | 'verified' | 'rejected'> = ['all', 'pending', 'verified', 'rejected'];
 
+const getIncidentStatusBadgeClass = (status: ReporterIncident['status']) => {
+  if (status === 'verified') {
+    return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-200';
+  }
+
+  if (status === 'rejected') {
+    return 'bg-rose-500/10 text-rose-700 dark:text-rose-200';
+  }
+
+  return 'bg-amber-500/10 text-amber-700 dark:text-amber-200';
+};
+
 export default function DashboardPage() {
   const [incidents, setIncidents] = useState<ReporterIncident[]>([]);
   const [query, setQuery] = useState('');
@@ -44,14 +56,21 @@ export default function DashboardPage() {
     verified: incidents.filter((incident) => incident.status === 'verified').length,
     rejected: incidents.filter((incident) => incident.status === 'rejected').length,
   };
-  const latest = incidents[0];
+
+  const latest = useMemo(() => {
+    if (incidents.length === 0) {
+      return null;
+    }
+
+    return incidents.reduce((highest, current) => (current.id > highest.id ? current : highest));
+  }, [incidents]);
 
   return (
     <div className="sb-page">
       <ReporterHeader
         active="dashboard"
         title="Incident dashboard"
-        description="Read every reported incident and keep the reporter view focused on data, not admin review actions."
+        description="Read every reported incident and keep the reporter view focused on data."
       />
 
       <main className="sb-shell pb-20 pt-8 md:pt-10">
@@ -76,7 +95,13 @@ export default function DashboardPage() {
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Latest incident</p>
                   <p className="mt-2 text-lg font-semibold text-slate-950 dark:text-white">{latest.title}</p>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{latest.location} | {latest.status} | {new Date(latest.createdAt).toLocaleString()}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                    <span>{latest.location}</span>
+                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${getIncidentStatusBadgeClass(latest.status)}`}>
+                      {latest.status}
+                    </span>
+                    <span>{new Date(latest.createdAt).toLocaleString()}</span>
+                  </div>
                 </div>
               )}
             </div>
@@ -100,7 +125,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <div className="sb-glass rounded-[1.75rem] p-6 md:p-7">
+          <div className="sb-glass rounded-[1.75rem] p-6 md:p-7 lg:flex lg:h-[730px] lg:flex-col">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <span className="sb-kicker">
@@ -128,14 +153,16 @@ export default function DashboardPage() {
               </select>
             </div>
 
-            <div className="mt-6 space-y-3">
+            <div className="mt-6 space-y-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-1">
               {filteredIncidents.map((incident) => (
                 <article key={incident.id} className="rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
                       <div className="flex flex-wrap items-center gap-2">
                         <p className="text-lg font-semibold text-slate-950 dark:text-white">{incident.title}</p>
-                        <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-semibold text-cyan-700 dark:text-cyan-200">{incident.status}</span>
+                        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${getIncidentStatusBadgeClass(incident.status)}`}>
+                          {incident.status}
+                        </span>
                       </div>
                       <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{incident.location}</p>
                     </div>

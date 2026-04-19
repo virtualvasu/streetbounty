@@ -29,6 +29,8 @@ export interface AdminIncident {
   status: IncidentStatus;
 }
 
+type RpcTransactionStatus = 'NOT_FOUND' | 'SUCCESS' | 'FAILED';
+
 const RPC_URL = 'https://soroban-testnet.stellar.org';
 const NETWORK_PASSPHRASE = Networks.TESTNET;
 const CONTRACT_ID = 'CDZSKVDS2VGECFXWLDRVXEHBVIYXKIJXJPJ6PTROG4E3NBDVLBZSYKDD';
@@ -277,15 +279,53 @@ class AdminContractClient {
 
   private async waitForTransaction(hash: string) {
     for (let attempt = 0; attempt < 24; attempt += 1) {
-      const tx = await this.server.getTransaction(hash);
-      if (tx.status === 'SUCCESS' || tx.status === 'FAILED') {
-        return tx;
+      const status = await this.getTransactionStatus(hash);
+      if (status === 'SUCCESS' || status === 'FAILED') {
+        return { status };
       }
 
       await delay(1500);
     }
 
     throw new Error('Timed out while waiting for transaction confirmation.');
+  }
+
+  private async getTransactionStatus(hash: string): Promise<RpcTransactionStatus> {
+    const response = await fetch(RPC_URL, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        jsonrpc: '2.0',
+        id: hash,
+        method: 'getTransaction',
+        params: {
+          hash,
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Transaction lookup failed with HTTP ${response.status}`);
+    }
+
+    const data = (await response.json()) as {
+      result?: { status?: string };
+      error?: { message?: string } | string;
+    };
+
+    if (data.error) {
+      const message = typeof data.error === 'string' ? data.error : data.error.message;
+      throw new Error(message || 'Transaction lookup failed at RPC layer');
+    }
+
+    const status = data.result?.status;
+    if (status === 'SUCCESS' || status === 'FAILED' || status === 'NOT_FOUND') {
+      return status;
+    }
+
+    throw new Error(`Unexpected transaction status: ${String(status)}`);
   }
 }
 

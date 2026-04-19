@@ -240,44 +240,6 @@ export default function AdminPortalPage() {
             </div>
 
             <div className="sb-panel rounded-[1.75rem] p-6 md:p-7">
-              <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
-                  <FiTrendingUp />
-                </div>
-                <div>
-                  <p className="text-sm uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
-                    Admin snapshot
-                  </p>
-                  <h2 className="text-2xl font-bold text-slate-950 dark:text-white">Contract and queue status</h2>
-                </div>
-              </div>
-
-              <div className="sb-grid-2 mt-5">
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Contract balance</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{balanceXlm} XLM</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Pending</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{pendingIncidents.length}</p></div>
-              </div>
-
-              <div className="sb-grid-3 mt-4">
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Approved</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{statusStats.approved}</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Disapproved</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{statusStats.disapproved}</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Total reports</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{incidents.length}</p></div>
-              </div>
-
-              <div className="mt-5 grid gap-3 text-sm text-slate-600 dark:text-slate-300">
-                <p className="rounded-2xl border border-white/10 bg-white/50 px-4 py-3 dark:bg-white/5">
-                  <span className="mr-2 font-semibold text-slate-900 dark:text-white">On-chain admin:</span>
-                  {adminAddress || 'Loading...'}
-                </p>
-                <p className="rounded-2xl border border-white/10 bg-white/50 px-4 py-3 dark:bg-white/5">
-                  <span className="mr-2 font-semibold text-slate-900 dark:text-white">Reward token:</span>
-                  {rewardToken || 'Loading...'}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <section className="sb-glass rounded-[1.75rem] p-6 md:p-7">
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                 <div>
                   <span className="sb-kicker">
@@ -286,12 +248,12 @@ export default function AdminPortalPage() {
                   </span>
                   <h2 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white">Review all incidents.</h2>
                 </div>
-                <span className="rounded-full bg-cyan-500/10 px-4 py-2 text-sm font-semibold text-cyan-700 dark:text-cyan-200">
+                <span className="rounded-full bg-amber-500/10 px-4 py-2 text-sm font-semibold text-amber-700 dark:text-amber-200">
                   {pendingIncidents.length} pending
                 </span>
               </div>
 
-              <div className="mt-6 space-y-3">
+              <div className="mt-6 max-h-[25.5rem] space-y-3 overflow-y-auto pr-1">
                 {loading ? (
                   <p className="rounded-2xl border border-dashed border-white/10 bg-white/40 p-6 text-sm text-slate-500 dark:bg-white/5 dark:text-slate-400">
                     Loading incidents from contract...
@@ -364,8 +326,11 @@ export default function AdminPortalPage() {
                   })
                 )}
               </div>
-            </section>
+            </div>
 
+          </div>
+
+          <div className="space-y-6">
             <section className="sb-panel rounded-[1.75rem] p-6 md:p-7">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
@@ -429,6 +394,42 @@ export default function AdminPortalPage() {
                     {actionLoading === 'withdraw' ? 'Withdrawing...' : 'Withdraw funds'}
                   </button>
                 </form>
+              </div>
+            </section>
+
+            <section className="sb-panel rounded-[1.75rem] p-6 md:p-7">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-950 text-white dark:bg-white dark:text-slate-950">
+                  <FiTrendingUp />
+                </div>
+                <div>
+                  <p className="text-sm uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">
+                    Admin snapshot
+                  </p>
+                  <h2 className="text-2xl font-bold text-slate-950 dark:text-white">Contract and queue status</h2>
+                </div>
+              </div>
+
+              <div className="sb-grid-2 mt-5">
+                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Contract balance</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{balanceXlm} XLM</p></div>
+                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Pending</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{pendingIncidents.length}</p></div>
+              </div>
+
+              <div className="sb-grid-3 mt-4">
+                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Approved</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{statusStats.approved}</p></div>
+                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Disapproved</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{statusStats.disapproved}</p></div>
+                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Total reports</p><p className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">{incidents.length}</p></div>
+              </div>
+
+              <div className="mt-5 grid gap-3 text-sm text-slate-600 dark:text-slate-300">
+                <p className="rounded-2xl border border-white/10 bg-white/50 px-4 py-3 dark:bg-white/5">
+                  <span className="mr-2 font-semibold text-slate-900 dark:text-white">On-chain admin:</span>
+                  {adminAddress || 'Loading...'}
+                </p>
+                <p className="rounded-2xl border border-white/10 bg-white/50 px-4 py-3 dark:bg-white/5">
+                  <span className="mr-2 font-semibold text-slate-900 dark:text-white">Reward token:</span>
+                  {rewardToken || 'Loading...'}
+                </p>
               </div>
             </section>
           </div>

@@ -4,18 +4,19 @@ import { useEffect, useMemo, useState } from 'react';
 import { FaCoins, FaGift, FaReceipt } from 'react-icons/fa';
 import ReporterHeader from '@/components/ReporterHeader';
 import ReporterWalletCard from '@/components/ReporterWalletCard';
-import { reporterContract, type ReporterIncident, type ReporterReward } from '@/lib/reporter-contract';
+import { reporterContract, type ReporterIncident } from '@/lib/reporter-contract';
 
 export default function RewardsPage() {
   const [publicKey, setPublicKey] = useState('');
-  const [incidents, setIncidents] = useState<ReporterIncident[]>([]);
-  const [rewards, setRewards] = useState<ReporterReward[]>([]);
+  const [approvedRewards, setApprovedRewards] = useState(() => reporterContract.deriveRewards([]));
 
   const loadRewards = async () => {
     try {
       const allIncidents = await reporterContract.getAllIncidents();
-      setIncidents(allIncidents);
-      setRewards(reporterContract.deriveRewards(allIncidents));
+      const approvedOnly = reporterContract
+        .deriveRewards(allIncidents)
+        .filter((reward) => reward.status === 'claimed' || reward.status === 'available');
+      setApprovedRewards(approvedOnly);
     } catch (error) {
       console.error('Failed to load rewards from contract:', error);
     }
@@ -25,17 +26,12 @@ export default function RewardsPage() {
     void loadRewards();
   }, []);
 
-  const walletRewards = useMemo(
-    () => rewards.filter((reward) => publicKey && reward.reporter === publicKey),
-    [rewards, publicKey]
+  const walletApprovedRewards = useMemo(
+    () => approvedRewards.filter((reward) => publicKey && reward.reporter === publicKey),
+    [approvedRewards, publicKey]
   );
 
-  const stats = {
-    total: rewards.reduce((sum, reward) => sum + reward.amount, 0),
-    available: rewards.filter((reward) => reward.status === 'available').reduce((sum, reward) => sum + reward.amount, 0),
-    claimed: rewards.filter((reward) => reward.status === 'claimed').reduce((sum, reward) => sum + reward.amount, 0),
-    estimated: rewards.filter((reward) => reward.status === 'estimated').reduce((sum, reward) => sum + reward.amount, 0),
-  };
+  const approvedTotal = approvedRewards.reduce((sum, reward) => sum + reward.amount, 0);
 
   return (
     <div className="sb-page">
@@ -57,51 +53,57 @@ export default function RewardsPage() {
             <div className="sb-panel rounded-[1.75rem] p-6 md:p-7">
               <span className="sb-kicker">
                 <FaCoins className="text-cyan-400" />
-                Reward summary
+                Approved reward tokens
               </span>
-              <div className="sb-grid-2 mt-6">
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Total</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{stats.total.toFixed(2)} XLM</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Available</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{stats.available.toFixed(2)} XLM</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Estimated</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{stats.estimated.toFixed(2)} XLM</p></div>
-                <div className="sb-stat"><p className="text-sm text-slate-500 dark:text-slate-400">Claimed</p><p className="mt-1 text-3xl font-bold text-slate-950 dark:text-white">{stats.claimed.toFixed(2)} XLM</p></div>
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/60 p-5 dark:bg-white/5">
+                <p className="text-sm text-slate-500 dark:text-slate-400">Approved total</p>
+                <p className="mt-2 text-4xl font-bold text-slate-950 dark:text-white">{approvedTotal.toFixed(2)} XLM</p>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                  Only rewards from approved reports are shown here.
+                </p>
               </div>
 
               {publicKey && (
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Connected wallet</p>
                   <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-                    Your address matches {walletRewards.length} reward{walletRewards.length === 1 ? '' : 's'} in the ledger.
+                    Your address matches {walletApprovedRewards.length} approved reward{walletApprovedRewards.length === 1 ? '' : 's'}.
                   </p>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="sb-glass rounded-[1.75rem] p-6 md:p-7">
+          <div className="sb-glass rounded-[1.75rem] p-6 md:p-7 lg:flex lg:h-[715px] lg:flex-col">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
                 <span className="sb-kicker">
                   <FaGift className="text-cyan-400" />
-                  Reward entries
+                  Approved entries
                 </span>
-                <h1 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">All rewards in one place.</h1>
+                <h1 className="mt-4 text-3xl font-bold text-slate-950 dark:text-white md:text-4xl">Approved rewards only.</h1>
               </div>
               <div className="rounded-full border border-white/10 bg-white/60 px-4 py-2 text-sm font-semibold text-slate-600 dark:bg-white/5 dark:text-slate-300">
                 On-chain data
               </div>
             </div>
 
-            <div className="mt-6 space-y-3">
-              {rewards.map((reward) => (
+            <div className="mt-6 space-y-3 lg:min-h-0 lg:flex-1 lg:overflow-y-auto lg:pr-1">
+              {approvedRewards.map((reward) => (
                 <article key={reward.id} className="rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
                   <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
                     <div>
                       <p className="text-lg font-semibold text-slate-950 dark:text-white">{reward.title}</p>
-                      <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">Incident #{reward.incidentId} • {reward.status}</p>
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <p className="text-sm text-slate-600 dark:text-slate-300">Incident #{reward.incidentId}</p>
+                        <span className="rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 dark:text-emerald-200">
+                          approved
+                        </span>
+                      </div>
                     </div>
                     <div className="text-right">
                       <p className="text-2xl font-bold text-slate-950 dark:text-white">{reward.amount.toFixed(2)} XLM</p>
-                      <p className="text-xs uppercase tracking-[0.22em] text-slate-500 dark:text-slate-400">{reward.status}</p>
+                      <p className="text-xs uppercase tracking-[0.22em] text-emerald-700 dark:text-emerald-200">approved</p>
                     </div>
                   </div>
                   <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{reward.note}</p>
@@ -112,9 +114,9 @@ export default function RewardsPage() {
                 </article>
               ))}
 
-              {rewards.length === 0 && (
+              {approvedRewards.length === 0 && (
                 <div className="rounded-2xl border border-dashed border-white/10 bg-white/40 p-6 text-sm text-slate-500 dark:bg-white/5 dark:text-slate-400">
-                  No rewards recorded yet on-chain.
+                  No approved rewards found yet.
                 </div>
               )}
             </div>

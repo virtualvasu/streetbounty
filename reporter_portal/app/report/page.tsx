@@ -6,6 +6,18 @@ import ReporterHeader from '@/components/ReporterHeader';
 import ReporterWalletCard from '@/components/ReporterWalletCard';
 import { reporterContract, type ReporterIncident } from '@/lib/reporter-contract';
 
+const getIncidentStatusBadgeClass = (status: ReporterIncident['status']) => {
+  if (status === 'verified') {
+    return 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-200';
+  }
+
+  if (status === 'rejected') {
+    return 'bg-rose-500/10 text-rose-700 dark:text-rose-200';
+  }
+
+  return 'bg-amber-500/10 text-amber-700 dark:text-amber-200';
+};
+
 export default function ReportPage() {
   const [publicKey, setPublicKey] = useState('');
   const [incidents, setIncidents] = useState<ReporterIncident[]>([]);
@@ -231,7 +243,12 @@ export default function ReportPage() {
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/60 p-4 dark:bg-white/5">
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Latest incident</p>
                   <p className="mt-2 text-lg font-semibold text-slate-950 dark:text-white">{latestIncident.title}</p>
-                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">{latestIncident.location} | {latestIncident.status}</p>
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                    <span>{latestIncident.location}</span>
+                    <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${getIncidentStatusBadgeClass(latestIncident.status)}`}>
+                      {latestIncident.status}
+                    </span>
+                  </div>
                 </div>
               )}
             </div>

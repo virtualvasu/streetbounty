@@ -22,7 +22,7 @@ const howItWorks = [
   {
     step: '02',
     title: 'Report Incident',
-    description: 'Capture the road issue with location, details, and proof when the portal expands.',
+    description: 'Capture the road issue with location, details, and proof on the report page.',
   },
   {
     step: '03',
@@ -111,12 +111,12 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Link href="/portal" className="sb-btn-primary">
-                Launch Portal <FaArrowRight />
+              <Link href="/dashboard" className="sb-btn-primary">
+                Launch Dashboard <FaArrowRight />
               </Link>
-              <a href="#how-it-works" className="sb-btn-secondary">
-                See how it works
-              </a>
+              <Link href="/report" className="sb-btn-secondary">
+                Report Incident
+              </Link>
             </div>
 
             <div className="sb-grid-3">
@@ -211,7 +211,7 @@ export default function Home() {
             <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
               <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Realtime utility</p>
               <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">Road data with a civic interface.</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The portal is meant to feel like a mission control dashboard, not a generic form app.</p>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The reporter workspace is meant to feel like a mission control dashboard, not a generic form app.</p>
             </div>
             <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
               <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Reward flow</p>
@@ -219,9 +219,9 @@ export default function Home() {
               <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">A simple incentive loop that can scale with trust and verification.</p>
             </div>
             <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
-              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Portal route</p>
+              <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Route split</p>
               <h3 className="mt-3 text-2xl font-bold text-slate-950 dark:text-white">Homepage CTA should take users into the dashboard.</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The portal becomes the operational center for wallet, rewards, and history.</p>
+              <p className="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">The reporter workspace is split into report, dashboard, and rewards pages.</p>
             </div>
             <div className="sb-panel rounded-[1.75rem] p-7 md:p-8">
               <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Trust layer</p>
@@ -324,12 +324,12 @@ export default function Home() {
                 <FaCoins />
               </div>
               <div>
-                <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Portal readiness</p>
+                <p className="text-sm uppercase tracking-[0.24em] text-slate-500 dark:text-slate-400">Reporter readiness</p>
                 <h3 className="text-2xl font-bold text-slate-950 dark:text-white">Dashboard-first experience</h3>
               </div>
             </div>
             <p className="mt-4 text-sm leading-7 text-slate-600 dark:text-slate-300">
-              The portal is where wallet connection, balances, rewards, and history live. Keep the homepage focused on context, then let the final CTA carry users through.
+              The reporter workspace is split across reporting, dashboard, and rewards routes. Keep the homepage focused on context, then let the final CTA carry users through.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <span className="sb-chip">Wallet tools</span>
@@ -344,10 +344,10 @@ export default function Home() {
             StreetBounty turns reporting into a visible civic loop.
           </h2>
           <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-300 md:text-base">
-            The frontend should feel persuasive, informative, and reliable from the first hero section to the final CTA. It should be easy to understand what the app does, who it helps, and why the portal matters.
+            The frontend should feel persuasive, informative, and reliable from the first hero section to the final CTA. It should be easy to understand what the app does, who it helps, and why the reporter workflow matters.
           </p>
-          <Link href="/portal" className="sb-btn-primary mt-8">
-            Open Portal <FaArrowRight />
+          <Link href="/dashboard" className="sb-btn-primary mt-8">
+            Open Dashboard <FaArrowRight />
           </Link>
         </section>
       </main>

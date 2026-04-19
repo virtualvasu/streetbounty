@@ -16,6 +16,7 @@ export default function ReportPage() {
   const [location, setLocation] = useState('');
   const [notice, setNotice] = useState('');
   const [loading, setLoading] = useState(false);
+  const [detectingLocation, setDetectingLocation] = useState(false);
 
   const loadIncidents = async () => {
     setLoading(true);
@@ -88,6 +89,59 @@ export default function ReportPage() {
         setLoading(false);
       }
     })();
+  };
+
+  const handleAutoDetectLocation = () => {
+    if (!navigator.geolocation) {
+      setNotice('Geolocation is not supported in this browser.');
+      return;
+    }
+
+    setDetectingLocation(true);
+    setNotice('Detecting your current location...');
+
+    navigator.geolocation.getCurrentPosition(
+      async ({ coords }) => {
+        const latitude = coords.latitude.toFixed(6);
+        const longitude = coords.longitude.toFixed(6);
+
+        try {
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`
+          );
+
+          if (!response.ok) {
+            throw new Error('Reverse geocoding failed');
+          }
+
+          const data = await response.json();
+          const resolvedLocation = data.display_name || `${latitude}, ${longitude}`;
+
+          setLocation(resolvedLocation);
+          setNotice('Location detected successfully.');
+        } catch {
+          setLocation(`${latitude}, ${longitude}`);
+          setNotice('Location coordinates detected. You can refine the address if needed.');
+        } finally {
+          setDetectingLocation(false);
+        }
+      },
+      (error) => {
+        const messageByCode: Record<number, string> = {
+          1: 'Location access was denied. Please allow permission and try again.',
+          2: 'Location is currently unavailable. Try again in a few seconds.',
+          3: 'Location request timed out. Please retry.',
+        };
+
+        setNotice(messageByCode[error.code] || 'Unable to detect location right now.');
+        setDetectingLocation(false);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      }
+    );
   };
 
   return (
@@ -176,7 +230,17 @@ export default function ReportPage() {
 
                 <label className="grid gap-2 text-sm text-slate-700 dark:text-slate-300">
                   Location
-                  <input value={location} onChange={(event) => setLocation(event.target.value)} placeholder="Main Street and 8th Avenue" className="sb-focus-ring rounded-2xl border border-white/10 bg-white/75 px-4 py-3 text-slate-950 outline-none transition-colors placeholder:text-slate-400 dark:bg-white/5 dark:text-white" />
+                  <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                    <input value={location} onChange={(event) => setLocation(event.target.value)} placeholder="Main Street and 8th Avenue" className="sb-focus-ring rounded-2xl border border-white/10 bg-white/75 px-4 py-3 text-slate-950 outline-none transition-colors placeholder:text-slate-400 dark:bg-white/5 dark:text-white" />
+                    <button
+                      type="button"
+                      onClick={handleAutoDetectLocation}
+                      disabled={detectingLocation}
+                      className="rounded-2xl border border-cyan-400/30 bg-cyan-500/10 px-4 py-3 text-sm font-semibold text-cyan-800 transition-colors hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:text-cyan-200"
+                    >
+                      {detectingLocation ? 'Detecting...' : 'Use current location'}
+                    </button>
+                  </div>
                 </label>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
